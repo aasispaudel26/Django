@@ -1,8 +1,13 @@
 from multiprocessing import reduction
+import re
 from urllib import response
 from django import http
 from django.http import HttpResponse ,HttpResponseNotFound,HttpResponseRedirect
 from django.urls import reverse
+from django.shortcuts import render
+
+import challenges
+
 
 
 
@@ -21,7 +26,7 @@ monthly_challenge = {
   "september":"can eat meat",
   "october":"best months",
   "november":"cutest month",
-  "december":"year ends here",
+  "december": "visit to village" ,
 }
 
 # Create your views here.
@@ -35,17 +40,17 @@ monthly_challenge = {
 #   return HttpResponse("should learn python every 20 mins a day")
 
 def index(request):
-  list_item = ""
   months = list(monthly_challenge.keys())
   
-  for month in months:
-    capitalized_month = month.capitalize()
-    month_path = reverse("month_challenge",args=[month])
-    list_item += f"<li><a href = \"{month_path}\">{capitalized_month}</a> </li>"
-    
-  response_data = f"<ul>{list_item}</ul>"
-  return HttpResponse(response_data)
-
+  # for month in months:
+  #  return render(request,"challenges/index.html",{
+  #    "months" : months 
+  #  })
+  
+  return render(request, 'challenges/index.html', context={'months':months})
+ 
+ 
+ 
 def monthly_challenges_by_number(request, month):
   months = list(monthly_challenge.keys())
   if month > len(months):
@@ -57,17 +62,13 @@ def monthly_challenges_by_number(request, month):
 def monthly_challenges(request, month):
   try:
     challenge_text = monthly_challenge[month]
-    response_data = f"<h1>{challenge_text}</h1>"
-    return HttpResponse(response_data)
+    return render(request,"challenges/challenges.html", {
+      "text" : challenge_text,
+      "months" : month
+    })
   except:
     return HttpResponseNotFound("this is not valid months")
  
     
-  # if month == "janaury":
-  #   challenge_text = ("No meat for this months!")
-  # elif month == "feburary":
-  #   challenge_text = ("should walk 20 min every morning")
-  # elif month == "march":
-  #   challenge_text = ("should learn python every 20 mins a day")
-
+  
  
