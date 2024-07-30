@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
-<title>{% block page_title %} Challenges {% endblock %}</title>
+<title>{% block page_title %} Challenges {% endblock page_title %}</title>
 
-{% block content %} {{text}} {% endblock %}
+{% block content %} {% include "Challenges/includes/header.html" %}
+<h1>{{text}}</h1>
+{% endblock content %}

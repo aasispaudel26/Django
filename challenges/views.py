@@ -5,6 +5,7 @@ from django import http
 from django.http import HttpResponse ,HttpResponseNotFound,HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render
+from django.template.loader import render_to_string
 
 import challenges
 
@@ -67,7 +68,9 @@ def monthly_challenges(request, month):
       "months" : month
     })
   except:
-    return HttpResponseNotFound("this is not valid months")
+    
+    response_data = render_to_string("404.html")
+    return HttpResponseNotFound(response_data)
  
     
   
